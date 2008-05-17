@@ -2,6 +2,8 @@
 # denyhosts module
 # Puzzle ITC - haerry+puppet(at)puzzle.ch
 # GPLv3
+# adapated by immerda project group
+# admin+puppet(at)immerda.ch
 # this module is used to configure the
 # denyhosts script.
 #######################################
@@ -9,7 +11,10 @@
 
 # modules_dir { "denyhosts": }
 class denyhosts {
-    include denyhosts::base
+    case $operatingsystem {
+        gentoo: { include denyhosts::gentoo }
+        default: { include denyhosts::base }
+    }
 }
 
 class denyhosts::base  {
@@ -38,5 +43,11 @@ class denyhosts::base  {
                     "puppet://$server/denyhosts/allowed-hosts" ],
         notify => Service[denyhosts],
         mode => 0600, owner => root, group => 0;
+    }
+}
+
+class denyhosts::gentoo inherits denyhosts::base {
+    Package[denyhosts]{
+        category => 'app-admin',
     }
 }
