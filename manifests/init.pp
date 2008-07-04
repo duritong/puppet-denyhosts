@@ -46,7 +46,7 @@ class denyhosts::base  {
 
     file{'/var/lib/denyhosts/':
         ensure => directory,
-        owner => root, group => 0, mode => 0755; 
+        owner => root, group => 0, mode => 0700; 
     }
     file{'/var/lib/denyhosts/allowed-hosts':
         source => [ "puppet://$server/files/denyhosts/${fqdn}/allowed-hosts", 
