@@ -16,6 +16,8 @@ class denyhosts::base  {
     file { '/etc/denyhosts.conf':
             source => [ "puppet://$server/files/${fqdn}/denyhosts.conf", 
                         "puppet://$server/files/denyhosts.conf",
+                        "puppet://$server/modules/site-denyhosts/${fqdn}/denyhosts.conf",
+                        "puppet://$server/modules/site-denyhosts/denyhosts.conf",
                         "puppet://$server/modules/denyhosts/denyhosts.conf" ],
             notify => Service[denyhosts],
             mode => 0600, owner => root, group => 0;
