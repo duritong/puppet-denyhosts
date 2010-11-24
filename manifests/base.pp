@@ -8,8 +8,8 @@ class denyhosts::base  {
     service { denyhosts:
         enable => true,
         ensure => running,
-        require => [ Package[denyhosts], 
-            File["/etc/denyhosts.conf"], 
+        require => [ Package[denyhosts],
+            File["/etc/denyhosts.conf"],
             File["/var/lib/denyhosts/allowed-hosts"] ],
     }
 
@@ -23,12 +23,15 @@ class denyhosts::base  {
             mode => 0600, owner => root, group => 0;
         '/var/lib/denyhosts':
             ensure => directory,
-            owner => root, group => 0, mode => 0700; 
+            before => Package[denyhosts],
+            owner => root, group => 0, mode => 0700;
         '/var/lib/denyhosts/allowed-hosts':
-            source => [ "puppet:///modules/site-denyhosts/${fqdn}/allowed-hosts", 
-                        "puppet:///modules/site-denyhosts/allowed-hosts",
-                        "puppet:///modules/denyhosts/allowed-hosts" ],
+            source => "puppet:///modules/denyhosts/allowed-hosts",
+            replace => false,
+            before => Package[denyhosts],
             notify => Service[denyhosts],
             mode => 0600, owner => root, group => 0;
     }
+
+    Denyhosts::Allowed_host <<||>>
 }
