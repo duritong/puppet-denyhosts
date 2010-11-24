@@ -1,5 +1,5 @@
 define denyhosts::allowed_host(
-  $ipaddress = $ip,
+  $ip = $ipaddress,
   $ensure = 'present'
 ){
   include ::denyhosts
