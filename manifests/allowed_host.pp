@@ -1,7 +1,8 @@
 define denyhosts::allowed_host(
-  $ip = $ipaddress,
+  $ip,
   $ensure = 'present'
 ){
+  include ::denyhosts
   line{"denyhosts_allowed_host_${name}":
     file => '/var/lib/denyhosts/allowed-hosts',
     line => $ip,
