@@ -1,5 +1,5 @@
 class denyhosts::gentoo inherits denyhosts::base {
-    Package[denyhosts]{
-        category => 'app-admin',
-    }
+  Package[denyhosts]{
+    category => 'app-admin',
+  }
 }
