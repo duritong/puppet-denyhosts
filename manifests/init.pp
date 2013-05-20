@@ -17,6 +17,7 @@
 class denyhosts {
   case $::operatingsystem {
     gentoo: { include denyhosts::gentoo }
+    debian: { include denyhosts::debian }
     default: { include denyhosts::base }
   }
 }
