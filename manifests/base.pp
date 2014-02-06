@@ -25,21 +25,43 @@ class denyhosts::base  {
       owner   => root,
       group   => 0,
       mode    => '0600';
-    '/var/lib/denyhosts':
-      ensure  => directory,
-      before  => Package['denyhosts'],
-      owner   => root,
-      group   => 0,
-      mode    => '0700';
     '/var/lib/denyhosts/allowed-hosts':
-      source  => 'puppet:///modules/denyhosts/allowed-hosts',
-      replace => false,
-      before  => Package['denyhosts'],
-      notify  => Service['denyhosts'],
       owner   => root,
       group   => 0,
       mode    => '0600';
   }
 
-  Denyhosts::Allowed_host <<||>>
+  if $allowed_hosts == 'autodiscover' {
+    $prepare_allowed_hosts = true
+    Denyhosts::Allowed_host <<||>>
+  } elsif is_arry($allowed_hosts) and !empty($allowed_hosts) {
+    $prepare_allowed_hosts = true
+    denyhosts::alowed_host{
+      $denyhosts::allowed_hosts:
+    }
+  } elsif $allowed_hosts != 'unmanaged' {
+    $prepare_allowed_hosts = false
+    File['/var/lib/denyhosts/allowed-hosts']{
+      content => $allowed_hosts,
+      require => Package['denyhosts'],
+      notify  => Service['denyhosts'],
+    }
+  } else {
+    $prepare_allowed_hosts = false
+  }
+  if $prepare_allowed_hosts {
+    file{
+      '/var/lib/denyhosts':
+        ensure  => directory,
+        owner   => root,
+        group   => 0,
+        mode    => '0700';
+    }
+    File['/var/lib/denyhosts/allowed-hosts']{
+      source  => 'puppet:///modules/denyhosts/allowed-hosts',
+      replace => false,
+      before  => Package['denyhosts'],
+      notify  => Service['denyhosts'],
+    }
+  }
 }
