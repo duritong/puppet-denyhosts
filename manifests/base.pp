@@ -2,16 +2,12 @@
 class denyhosts::base  {
   package {'denyhosts':
     ensure  => present,
-    require => [ File['/etc/denyhosts.conf'],
-      File['/var/lib/denyhosts/allowed-hosts'] ],
   }
 
   service {'denyhosts':
     ensure  => running,
     enable  => true,
-    require => [ Package['denyhosts'],
-      File['/etc/denyhosts.conf'],
-      File['/var/lib/denyhosts/allowed-hosts'] ],
+    require => File['/var/lib/denyhosts/allowed-hosts'],
   }
 
   file {
