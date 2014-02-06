@@ -27,18 +27,18 @@ class denyhosts::base  {
       mode    => '0600';
   }
 
-  if $allowed_hosts == 'autodiscover' {
+  if $denyhosts::allowed_hosts == 'autodiscover' {
     $prepare_allowed_hosts = true
     Denyhosts::Allowed_host <<||>>
-  } elsif is_array($allowed_hosts) and !empty($allowed_hosts) {
+  } elsif is_array($denyhosts::allowed_hosts) and !empty($denyhosts::allowed_hosts) {
     $prepare_allowed_hosts = true
     denyhosts::alowed_host{
       $denyhosts::allowed_hosts:
     }
-  } elsif $allowed_hosts != 'unmanaged' {
+  } elsif $denyhosts::allowed_hosts != 'unmanaged' {
     $prepare_allowed_hosts = false
     File['/var/lib/denyhosts/allowed-hosts']{
-      content => $allowed_hosts,
+      content => $denyhosts::allowed_hosts,
       require => Package['denyhosts'],
       notify  => Service['denyhosts'],
     }
