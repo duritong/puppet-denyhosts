@@ -32,7 +32,7 @@ class denyhosts::base  {
     Denyhosts::Allowed_host <<||>>
   } elsif is_array($denyhosts::allowed_hosts) and !empty($denyhosts::allowed_hosts) {
     $prepare_allowed_hosts = true
-    denyhosts::alowed_host{
+    denyhosts::allowed_host{
       $denyhosts::allowed_hosts:
     }
   } elsif $denyhosts::allowed_hosts != 'unmanaged' {
