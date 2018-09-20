@@ -12,19 +12,19 @@ class denyhosts::base  {
 
   file {
     '/etc/denyhosts.conf':
-      source  => ["puppet:///modules/site_denyhosts/${::fqdn}/denyhosts.conf",
+      source => ["puppet:///modules/site_denyhosts/${::fqdn}/denyhosts.conf",
                   "puppet:///modules/site_denyhosts/${::operatingsystem}/denyhosts.conf",
                   'puppet:///modules/site_denyhosts/denyhosts.conf',
                   "puppet:///modules/denyhosts/${::operatingsystem}/denyhosts.conf",
                   'puppet:///modules/denyhosts/denyhosts.conf' ],
-      notify  => Service['denyhosts'],
-      owner   => root,
-      group   => 0,
-      mode    => '0600';
+      notify => Service['denyhosts'],
+      owner  => root,
+      group  => 0,
+      mode   => '0600';
     '/var/lib/denyhosts/allowed-hosts':
-      owner   => root,
-      group   => 0,
-      mode    => '0600';
+      owner => root,
+      group => 0,
+      mode  => '0600';
   }
 
   if $denyhosts::allowed_hosts == 'autodiscover' {
@@ -48,10 +48,10 @@ class denyhosts::base  {
   if $prepare_allowed_hosts {
     file{
       '/var/lib/denyhosts':
-        ensure  => directory,
-        owner   => root,
-        group   => 0,
-        mode    => '0700';
+        ensure => directory,
+        owner  => root,
+        group  => 0,
+        mode   => '0700';
     }
     File['/var/lib/denyhosts/allowed-hosts']{
       source  => 'puppet:///modules/denyhosts/allowed-hosts',
